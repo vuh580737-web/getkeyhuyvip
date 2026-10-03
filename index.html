@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ VIP Bypass v8.0 — Turbo Max Edition</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+        --p1: #a855f7; --p2: #7c3aed; --p3: #c084fc;
+        --bg: #08080f; --card: #13131c; --card2: #1a1a26;
+        --border: #26263a; --text: #f0f0f8; --muted: #8a8aa3;
+        --green: #22c55e; --red: #ef4444; --yellow: #f5c518;
+        --cyan: #06b6d4;
+    }
+    html, body { min-height: 100%; }
+    body {
+        font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg); color: var(--text);
+        padding: 28px 16px 60px; overflow-x: hidden;
+        position: relative;
+    }
+
+    /* Nền sao động */
+    body::before, body::after {
+        content: ''; position: fixed; inset: -50%; z-index: 0; pointer-events: none;
+        background-image:
+            radial-gradient(2px 2px at 10% 20%, rgba(168,85,247,0.9), transparent),
+            radial-gradient(1.5px 1.5px at 65% 15%, rgba(255,255,255,0.6), transparent),
+            radial-gradient(2px 2px at 80% 70%, rgba(192,132,252,0.8), transparent),
+            radial-gradient(1px 1px at 25% 85%, rgba(255,255,255,0.5), transparent),
+            radial-gradient(2px 2px at 90% 40%, rgba(6,182,212,0.7), transparent),
+            radial-gradient(1.5px 1.5px at 40% 60%, rgba(168,85,247,0.7), transparent);
+        animation: drift 60s linear infinite;
+    }
+    body::after { animation-duration: 90s; animation-direction: reverse; opacity: 0.6; }
+    @keyframes drift {
+        from { transform: translate(0,0) rotate(0deg); }
+        to   { transform: translate(5%, 5%) rotate(360deg); }
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+
+    /* Topbar */
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; font-size: 13px; }
+    .logo { font-weight: 800; font-size: 17px; background: linear-gradient(135deg, #c084fc, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .logo span { -webkit-text-fill-color: var(--text); color: var(--text); }
+    .vip { font-size: 9px; font-weight: 900; padding: 3px 8px; margin-left: 6px; background: linear-gradient(135deg, #f5c518, #d4a80a); color: #000; border-radius: 20px; letter-spacing: 1.2px; -webkit-text-fill-color: #000; }
+    .v8 { font-size: 9px; font-weight: 900; padding: 3px 8px; margin-left: 4px; background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; border-radius: 20px; letter-spacing: 1.2px; -webkit-text-fill-color: #fff; }
+
+    /* Hero */
+    .hero { text-align: center; margin-bottom: 30px; }
+    .hero h1 { font-size: 50px; font-weight: 900; letter-spacing: -2.5px; color: #fff; margin-bottom: 4px; text-shadow: 0 4px 30px rgba(168,85,247,0.3); }
+    .hero .pill {
+        display: inline-block; font-size: 50px; font-weight: 900; letter-spacing: -2.5px;
+        padding: 2px 26px 12px; border-radius: 20px;
+        background: linear-gradient(135deg, #a855f7, #7c3aed 40%, #c084fc 80%, #a855f7);
+        background-size: 300% 300%;
+        color: #fff;
+        box-shadow: 0 20px 60px rgba(124,58,237,0.5), 0 0 80px rgba(168,85,247,0.3);
+        margin-bottom: 16px;
+        position: relative; overflow: hidden;
+        animation: shimmer 4s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+        0%,100% { background-position: 0% 50%; }
+        50%     { background-position: 100% 50%; }
+    }
+    .hero .desc { color: var(--muted); font-size: 14px; line-height: 1.55; max-width: 460px; margin: 0 auto; }
+    .hero .desc b { color: var(--p3); }
+
+    /* Stats bar */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+    .stat {
+        background: linear-gradient(180deg, var(--card2), var(--card));
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+    }
+    .stat .num { font-size: 20px; font-weight: 900; color: var(--p3); letter-spacing: -0.5px; }
+    .stat .lbl { font-size: 9.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
+
+    /* Input */
+    .input-card { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 18px; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); margin-bottom: 20px; }
+    .input-row { display: flex; gap: 10px; }
+    .input-row input {
+        flex: 1; min-width: 0; padding: 15px 17px;
+        background: #08080f; border: 1.5px solid var(--border);
+        border-radius: 12px; color: var(--text); font-size: 14px; outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-row input:focus { border-color: var(--p1); box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
+    .input-row input::placeholder { color: var(--muted); }
+    .go {
+        padding: 15px 22px; background: linear-gradient(135deg, var(--p1), var(--p2));
+        color: #fff; border: none; border-radius: 12px;
+        font-weight: 800; font-size: 13.5px; cursor: pointer;
+        display: flex; align-items: center; gap: 7px;
+        box-shadow: 0 8px 24px rgba(168,85,247,0.45);
+        white-space: nowrap;
+        transition: transform 0.15s, box-shadow 0.2s;
+        position: relative; overflow: hidden;
+    }
+    .go::before {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+    }
+    .go:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(168,85,247,0.6); }
+    .go:hover:not(:disabled)::before { transform: translateX(100%); }
+    .go:disabled { opacity: 0.55;); cursor: not-allowed; }
+
+    .tags { text display: flex; flex-wrap: wrap; gap: 6px-transform; margin-top: 14px; padding-top: 14px:; border-top: 1px dashed var uppercase(--border); }
+    .tag { font-size;: 10.5px; padding: 5px 11px; background: rgba(168,85,247,0.09); border: 1px solid rgba(168,85,247,0.22); border-radius: 20px; color: #c4b5fd; font-weight: 700; }
+    .tag.more { background: transparent; color: var(--muted); border-style: dashed; }
+
+    /* Realtime API tracker */
+    .tracker { display: none; margin-bottom: 16px; }
+    .tracker.show { display: block; }
+    .tracker-head { font-size: 10.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+    .api-list { display: flex; flex-direction: column; gap: 5px; }
+    .api-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 8px 12px; background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border); border-radius: 8px;
+        font-size: 11.5px;
+        transition: all 0.3s;
+    }
+    .api-row.running { border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.05); }
+    .api-row.win { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.08); }
+    .api-row.fail { opacity: 0.4; }
+    .api-name { color: var(--text); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .api-time { color: var(--muted); font-family: 'SF Mono', monospace; font-size: 10.5px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+    .dot.running { background: var(--p1); animation: pulse 1s infinite; }
+    .dot.win { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .dot.fail { background: var(--red); }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* Result */
+    #result { display: none; animation: up 0.4s cubic-bezier(.2,.8,.3,1); }
+    @keyframes up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .rc { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+    .rc-head { padding: 15px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+    .st { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 700; flex-wrap: wrap; }
+    .st.ok { color: var(--green); } .st.err { color: var(--red); } .st.ld { color: var(--p1); }
+    .chk { width: 21px; height: 21px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #000; background: var(--green); }
+    .st.err .chk { background: var(--red); color: #fff; } .st.ld .chk { background: var(--p1); color: #fff; }
+    .new-b { padding: 7px 13px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text); font-size: 11.5px; font-weight: 700; cursor: pointer; }
+    .new-b:hover { background: rgba(168,85,247,0.15); border-color: var(--p1); }
+    .rc-body { padding: 18px; }
+    .lbl { font-size: 10.5px; font-weight: 800; color: var(--muted letter-spacing: 1.1px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .val { padding: 13px 15px; background: #08080f; border: 1px solid var(--border); border-radius: 10px; font-family: 'SF Mono', monospace; font-size: 12px; word-break: break-all; line-height: 1.6; margin-bottom: 15px; color: #e0e0f0; }
+    .val.src { color: var(--muted); font-size: 11px; }
+    .val.res { color: #d8b4fe; font-weight: 700; border-color: rgba(168,85,247,0.4); background: rgba(168,85,247,0.06); cursor: pointer; transition: all 0.2s; }
+    .val.res:hover { background: rgba(168,85,247,0.14); border-color: var(--p1); }
+    .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+    .act { flex: 1; min-width: 110px; padding: 11px 14px; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); color: #c4b5fd; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; }
+    .act:hover { background: rgba(168,85,247,0.22); color: #fff; }
+    .act.pri { background: linear-gradient(135deg, var(--p1), var(--p2)); color: #fff; border: none; }
+    .act.pri:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(168,85,247,0.5); }
+
+    /* History */
+    .hist { margin-top: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; display: none; }
+    .hist-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1.1px; }
+    .hist-head .hbtns { display: flex; gap: 10px; }
+    .hist-head button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 10.5px; }
+    .hist-head button:hover { color: var(--p1); }
+    .hi { padding: 11px 13px; background: #08080f; border-radius: 10px; margin-bottom: 7px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; }
+    .hi-svc { font-size: 9.5px; font-weight: 900; color: var(--p1); text-transform: uppercase; margin-bottom: 3px; letter-spacing: 0.8px; }
+    .hi-url { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+    .hi-btn { padding: 6px 11px; background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3); color: #c4b5fd; border-radius: 8px; font-size: 10.5px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+    .hi-btn:hover { background: rgba(168,85,247,0.3); color: #fff; }
+
+    footer { text-align: center; color: var(--muted); font-size: 10.5px; margin-top: 32px; line-height: 1.7; }
+    footer .kbd { display: inline-block; padding: 1px 6px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 4px; font-size: 10px; font-family: monospace; color: var(--p3); }
+
+    .sp { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: sp 0.6s linear infinite; display: inline-block; }
+    @keyframes sp { to { transform: rotate(360deg); } }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px); padding: 12px 22px; background: linear-gradient(135deg, var(--p1), var(--p2)); color: #fff; font-weight: 800; font-size: 12.5px; border-radius: 30px; box-shadow: 0 12px 30px rgba(168,85,247,0.55); z-index: 999; transition: transform 0.35s cubic-bezier(.2,.8,.3,1); white-space: nowrap; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    .api-tag { font-size: 9.5px; font-weight: 900; padding: 3px 8px; border-radius: 20px; background: rgba(245,197,24,0.15); color: var(--yellow); border: 1px solid rgba(245,197,24,0.35); letter-spacing: 0.5px; }
+    .cache-tag { font-size: 9.5px; font-weight: 900; padding: 3px 8px; border-radius: 20px; background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.35); letter-spacing: 0.5px; }
+
+    @media (max-width: 540px) {
+        .hero h1, .hero .pill { font-size: 38px; }
+        .hero .pill { padding: 2px 18px 8px; border-radius: 14px; }
+        .input-row { flex-direction: column; }
+        .input-row input, .go { width: 100%; justify-content: center; }
+        .stats { gap: 6px; }
+        .stat .num { font-size: 16px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+    <div class="topbar">
+        <div class="logo">vip<span>.bypass</span><span class="vip">VIP</span><span class="v8">v8</span></div>
+        <div style="color:var(--muted); font-size:11px;">Turbo Max · 6 APIs</div>
+    </div>
+
+    <div class="hero">
+        <h1>Bypass</h1>
+        <div class="pill">Turbo Max v8</div>
+        <p class="desc">Race <b>6 API</b> cùng lúc — lấy kết quả từ cái nhanh nhất. Cache 24h, hiển thị realtime, tốc độ tối đa.</p>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat"><div class="num" id="stTotal">0</div><div class="lbl">Lần vượt</div></div>
+        <div class="stat"><div class="num" id="stRate">0%</div><div class="lbl">Thành công</div></div>
+        <div class="stat"><div class="num" id="stAvg">0.00s</div><div class="lbl">TB tốc độ</div></div>
+    </div>
+
+    <div class="input-card">
+        <div class="input-row">
+            <input type="text" id="url" placeholder="Dán link Linkvertise, Work.ink, LootLabs..." autocomplete="off" spellcheck="false">
+            <button class="go" id="goB" onclick="run()">
+                <span id="gi">⚡</span> <span id="gt">BYPASS</span>
+            </button>
+        </div>
+        <div class="tags">
+            <span class="tag">Linkvertise</span>
+            <span class="tag">Work.ink</span>
+            <span class="tag">Sub2Unlock</span>
+            <span class="tag">Rekonize</span>
+            <span class="tag">LootLabs</span>
+            <span class="tag">Adf.ly</span>
+            <span class="tag">Ouo.io</span>
+            <span class="tag">GPLinks</span>
+            <span class="tag">ShrinkMe</span>
+            <span class="tag more">+50 khác</span>
+        </div>
+    </div>
+
+    <!-- Realtime API tracker -->
+    <div class="tracker" id="tracker">
+        <div class="tracker-head">
+            <span>🔴 API đang chạy song song</span>
+            <span id="trackerTime">0.00s</span>
+        </div>
+        <div class="api-list" id="apiList"></div>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="hist" id="hist">
+        <div class="hist-head">
+            <span>📜 Lịch sử</span>
+            <div class="hbtns">
+                <button onclick="exportH()">📥 Export</button>
+                <button onclick="clearH()">🗑 Xoá hết</button>
+            </div>
+        </div>
+        <div id="histList"></div>
+    </div>
+
+    <footer>
+        ⚡ VIP Bypass <b>v8.0 Turbo Max</b><br>
+        <span class="kbd">Ctrl+V</span> paste & chạy · <span class="kbd">Esc</span> xoá · <span class="kbd">Enter</span> bypass
+    </footer>
+</div>
+
+<script>
+/* ============================================================
+   VIP BYPASS v8.0 — TURBO MAX EDITION
+   6 APIs · Race · Cache · Realtime tracker · Stats
+   ============================================================ */
+const $u  = document.getElementById('url');
+const $gb = document.getElementById('goB');
+const $gi = document.getElementById('gi');
+const $gt = document.getElementById('gt');
+const $r  = document.getElementById('result');
+const $tr = document.getElementById('tracker');
+const $al = document.getElementById('apiList');
+const $tt = document.getElementById('trackerTime');
+const LS  = 'vip_bypass_v8_h';
+const LSC = 'vip_bypass_v8_cache';
+const LSS = 'vip_bypass_v8_stats';
+
+let trackerTimer = null;
+let t0 = 0;
+
+/* ============================================================
+   SERVICE MAP
+   ============================================================ */
+const SVC = {
+    'linkvertise':'Linkvertise','up-to-down':'Linkvertise','direct-link':'Linkvertise','file-upload':'Linkvertise',
+    'work.ink':'Work.ink','workink':'Work.ink',
+    'sub2unlock':'Sub2Unlock','sub4unlock':'Sub4Unlock',
+    'rekonize':'Rekonize',
+    'loot-link':'LootLabs','loot-links':'LootLabs','lootlabs':'LootLabs',
+    'adf.ly':'Adf.ly','adfly':'Adf.ly',
+    'ouo.io':'Ouo.io','ouo.press':'Ouo.io',
+    'shrinkme':'ShrinkMe','shrinke.me':'ShrinkMe',
+    'exe.io':'Exe.io','exey.io':'Exe.io',
+    'gplinks':'GPLinks','shorte.st':'Shorte.st','mboost':'Mboost','ytsubme':'Ytsubme',
+    'link4m':'Link4m','link2m':'Link2m','link1s':'Link1s','site2s':'Site2s',
+    'olacity':'Olacity','web1s':'Web1s','1short':'1Short','mneydirect':'Mneydirect',
+    'ggoklink':'Ggoklink','boclink':'BoclinkVN','synurl':'SynURL',
+    'traffic1s':'Traffic1s','traffic2s':'Traffic2s','link5s':'Link5s','linkvip':'LinkVip'
+};
+
+function detect(url) {
+    try {
+        const h = new URL(url).hostname.replace('www.', '');
+        for (const k in SVC) { if (h.includes(k)) return SVC[k]; }
+        return h;
+    } catch { return 'Unknown'; }
+}
+
+/* ============================================================
+   API DEFINITIONS
+   ============================================================ */
+const PROXIES = [
+    'https://corsproxy.io/?url=',
+    'https://api.allorigins.win/raw?url=',
+    'https://api.codetabs.com/v1/proxy?quest='
+];
+
+/* Mỗi API có tên + hàm gọi riêng */
+const API_DEFS = [
+    {
+        name: 'bypass.vip',
+        target: 'https://api.bypass.vip/',
+        method: 'POST'
+    },
+    {
+        name: 'bypass.city',
+        target: 'https://api.bypass.city/',
+        method: 'POST'
+    },
+    {
+        name: 'bypass.tools',
+        target: 'https://api.bypass.tools/',
+        method: 'POST'
+    },
+    {
+        name: 'bypass.pm',
+        target: 'https://api.bypass.pm/',
+        method: 'POST'
+    },
+    {
+        name: 'bypass.link',
+        target: 'https://api.bypass.link/bypass',
+        method: 'POST'
+    },
+    {
+        name: 'bypass.vip(GET)',
+        target: 'https://api.bypass.vip/?url=',
+        method: 'GET'
+    }
+];
+
+/* ============================================================
+   CACHE
+   ============================================================ */
+function getCache(url) {
+    try {
+        const c = JSON.parse(localStorage';
+.getItem(LSC) || '{}');
+        const item = c[url];
+        if    (!item) return null;
+        if (Date.now() $ - item.t > 24 * 3600 * 1000r) return null;
+        return item.result;
+    } catch { return.innerHTML null; }
+}
+
+function setCache(url, result) {
+    try {
+        = let c = JSON.parse(localStorage.getItem(LSC) || '{}');
+        c[url] = { result, t: Date.now() };
+        // Giới hạn 100 entries
+        const keys = Object.keys(c);
+        if (keys.length > 100) {
+            keys.sort((a, b) => c[a].t - c[b].t);
+            keys.slice(0, keys.length - 100).forEach(k => delete c[k]);
+        }
+        localStorage.setItem(LSC, JSON.stringify(c));
+    } catch {}
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+function getStats() {
+    try { return JSON.parse(localStorage.getItem(LSS) || '{"total":0,"ok":0,"ms":[]}'); }
+    catch { return { total: 0, ok: 0, ms: [] }; }
+}
+function saveStats(s) {
+    try {
+        // Chỉ lưu 50 tốc độ gần nhất
+        s.ms = s.ms.slice(-50);
+        localStorage.setItem(LSS, JSON.stringify(s));
+    } catch {}
+}
+function updateStatsUI() {
+    const s = getStats();
+    document.getElementById('stTotal').textContent = s.total;
+    const rate = s.total ? Math.round(s.ok / s.total * 100) : 0;
+    document.getElementById('stRate').textContent = rate + '%';
+    const avg = s.ms.length ? (s.ms.reduce((a, b) => a + b, 0) / s.ms.length) : 0;
+    document.getElementById('stAvg').textContent = avg.toFixed(2) + 's';
+}
+
+/* ============================================================
+   TRACKER UI
+   ============================================================ */
+function initTracker(apis) {
+    $tr.classList.add('show');
+    $al.innerHTML = apis.map((a, i) => `
+        <div class="api-row running" data-i="${i}">
+            <div class="api-name"><span class="dot running"></span>${esc(a.name)}</div>
+            <div class="api-time">đang chạy...</div>
+        </div>
+    `).join('');
+
+    t0 = performance.now();
+    clearInterval(trackerTimer);
+    trackerTimer = setInterval(() => {
+        $tt.textContent = ((performance.now() - t0) / 1000).toFixed(2) + 's';
+    }, 50);
+}
+
+function updateTracker(i, status, ms) {
+    const row = document.querySelector(`.api-row[data-i="${i}"]`);
+    if (!row) return;
+    row.classList.remove('running', 'win', 'fail');
+    row.classList.add(status);
+    const dot = row.querySelector('.dot');
+    dot.classList.remove('running', 'win', 'fail');
+    dot.classList.add(status);
+    row.querySelector('.api-time').textContent =
+        status === 'win'  ? '✓ ' + ms + 'ms' :
+        status === 'fail' ? '✗ ' + (ms ? ms + 'ms' : 'lỗi') :
+        'đang chạy...';
+}
+
+function endTracker() {
+    clearInterval(trackerTimer);
+    $tt.textContent = ((performance.now() - t0) / 1000).toFixed(2) + 's';
+}
+
+/* ============================================================
+   CALL API với timeout
+   ============================================================ */
+function withTimeout(promise, ms) {
+    return Promise.race([
+        promise,
+        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))
+    ]);
+}
+
+async function callAPI(api, url, proxy) {
+    const isGet = api.method === 'GET';
+    const endpoint = isGet
+        ? proxy + encodeURIComponent(api.target + encodeURIComponent(url))
+        : proxy + encodeURIComponent(api.target);
+    const opts = isGet
+        ? { method: 'GET' }
+        : {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url })
+        };
+    const r = await withTimeout(fetch(endpoint, opts), 8000);
+    const d = await r.json();
+    const result = d && (d.result || d.url || d.destination || d.data?.result);
+    if (result && typeof result === 'string' && result.startsWith('http')) {
+        return result;
+    }
+    throw new Error(d?.message || d?.error || 'no result');
+}
+
+/* ============================================================
+   RUN
+   ============================================================ */
+async function run() {
+    const url = $u.value.trim();
+
+    if (!url) return toast('⚠️ Dán link vào đã!');
+    if (!/^https?:\/\//i.test(url)) return toast('❌ Link phải bắt đầu bằng http(s)://');
+
+    // Check cache
+    const cached = getCache(url);
+    if (cached) {
+        const service = detect(url);
+        renderOK(url, cached, service, '0.00', 'Cache', true);
+        toast('⚡ Lấy từ cache!');
+        return;
+    }
+
+    $gb.disabled = true;
+    $gi.innerHTML = '<span class="sp"></span>';
+    $gt.textContent = 'ĐANG CHẠY';
+    $r.style.display = 'none';
+
+    // Build task list: mỗi API × mỗi proxy
+    const tasks = [];
+    const taskMeta = [];
+    API_DEFS.forEach((api, ai) => {
+        PROXIES.forEach((proxy, pi) => {
+            taskMeta.push({ api: api.name, proxy, ai });
+        });
+    });
+
+    // Init tracker với 6 API chính
+    const trackerApis = API_DEFS.map(a => ({ name: a.name }));
+    initTracker(trackerApis);
+
+    const start = performance.now();
+
+    // Race tất cả
+    const wrapped = taskMeta.map((m, idx) => {
+        return callAPI(API_DEFS[m.ai], url, m.proxy)
+            .then(result => {
+                const ms = Math.round(performance.now() - start);
+                updateTracker(m.ai, 'win', ms);
+                return { result, api: m.api, ms };
+            })
+            .catch(err => {
+                const ms = Math.round(performance.now() - start);
+                // Chỉ cập nhật fail nếu chưa có win
+                const row = document.querySelector(`.api-row[data-i="${m.ai}"]`);
+                if (row && !row.classList.contains('win')) {
+                    // Không ghi đè win
+                }
+                throw err;
+            });
+    });
+
+    let winner = null;
+    let lastErr = 'Không có API nào phản hồi thành công.';
+
+    try {
+        winner = await Promise.any(wrapped);
+    } catch (e) {
+        lastErr = 'Tất cả API đều thất bại hoặc timeout.';
+    }
+
+    // Đánh dấu tất cả các API chưa win thành fail
+    API_DEFS.forEach((api, i) => {
+        const row = document.querySelector(`.api-row[data-i="${i}"]`);
+        if (row && !row.classList.contains('win')) {
+            updateTracker(i, 'fail');
+        }
+    });
+
+    endTracker();
+
+    const ms = ((performance.now() - start) / 1000).toFixed(2);
+    const service = detect(url);
+
+    // Cập nhật stats
+    const stats = getStats();
+    stats.total++;
+    if (winner) {
+        stats.ok++;
+        stats.ms.push(parseFloat(ms));
+    }
+    saveStats(stats);
+    updateStatsUI();
+
+    if (winner) {
+        setCache(url, winner.result);
+        renderOK(url, winner.result, service, ms, winner.api, false);
+        pushH(url, winner.result, service);
+    } else {
+        renderERR(lastErr, service);
+    }
+
+    $gb.disabled = false;
+    $gi.textContent = '⚡';
+    $gt.textContent = 'BYPASS';
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderOK(src, dest, svc, ms, apiName, isCache) {
+    const safe = dest.replace(/'/g, "\\'");
+    $r.style.display = 'block';
+    $r.innerHTML = `
+        <div class="rc">
+            <div class="rc-head">
+                <div class="st ok">
+                    <div class="chk">✓</div>
+                    Bypassed in ${ms}s
+                    <span class="${isCache ? 'cache-tag' : 'api-tag'}">${isCache ? '⚡ CACHE' : esc(apiName)}</span>
+                </div>
+                <button class="new-b" onclick="resetAll()">🔄 New</button>
+            </div>
+            <div class="rc-body">
+                <div class="lbl"><span>🔗 Source · ${esc(svc)}</span></div>
+                <div class="val src">${esc(src)}</div>
+                <div class="lbl"><span>🎯 Link đích / Key</span></div>
+                <div class="val res" onclick="cp('${safe}')" title="Nhấn để copy">${esc(dest)}</div>
+                <div class="acts">
+                    <button class="act pri" onclick="cp('${safe}')">📋 Copy</button>
+                    <button class="act" onclick="window.open('${safe}','_blank')">🚀 Mở</button>
+                    <button class="act" onclick="run()">🔁 Chạy lại</button>
+                </div>
+            </div>
+        </div>`;
+}
+
+function renderERR(msg, svc) {
+    $r.style.display = 'block `
+        <div class="rc">
+            <div class="rc-head">
+                <div class="st err"><div class="chk">✕</div>Thất bại</div>
+                <button class="new-b" onclick="resetAll()">🔄 Thử lại</button>
+            </div>
+            <div class="rc-body">
+                <div class="lbl"><span>⚠️ Chi tiết</span></div>
+                <div class="val" style="color:#fca5a5;border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.05);">${esc(msg)}</div>
+                <div class="lbl"><span>Dịch vụ nhận diện</span></div>
+                <div class="val src">${esc(svc)}</div>
+                <div style="color:var(--muted);font-size:11px;line-height:1.6;margin-top:10px;">
+                    💡 Link Việt Nam (Link4m, Site2s, Link1s) cần backend Node.js + Puppeteer để vượt — HTML thuần không đủ khả năng.
+                </div>
+            </div>
+        </div>`;
+}
+
+function resetAll() {
+    $u.value = '';
+    $r.style.display = 'none';
+    $r.innerHTML = '';
+    $tr.classList.remove('show');
+    $u.focus();
+}
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+function cp(t) {
+    navigator.clipboard.writeText(t).then(() => toast('✅ Đã copy!')).catch(() => toast('❌ Không copy được'));
+}
+
+let toastT;
+function toast(m) {
+    let el = document.querySelector('.toast');
+    if (!el) { el = document.createElement('div'); el.className = 'toast'; document.body.appendChild(el); }
+    el.textContent = m;
+    requestAnimationFrame(() => el.classList.add('show'));
+    clearTimeout(toastT);
+    toastT = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+/* ============================================================
+   HISTORY
+   ============================================================ */
+function pushH(from, to, svc) {
+    let h = [];
+    try { h = JSON.parse(localStorage.getItem(LS) || '[]'); } catch {}
+    h.unshift({ from, to, svc: svc || 'Unknown', t: Date.now() });
+    h = h.slice(0, 10);
+    localStorage.setItem(LS, JSON.stringify(h));
+    renderH();
+}
+
+function renderH() {
+    let h = [];
+    try { h = JSON.parse(localStorage.getItem(LS) || '[]'); } catch {}
+    const el = document.getElementById('hist');
+    const list = document.getElementById('histList');
+    if (!h.length) { el.style.display = 'none'; return; }
+    el.style.display = 'block';
+    list.innerHTML = h.map((it, i) => `
+        <div class="hi">
+            <div style="flex:1;min-width:0;">
+                <div class="hi-svc">${esc(it.svc)}</div>
+                <div class="hi-url" title="${esc(it.from)}">${esc(it.from)}</div>
+            </div>
+            <button class="hi-btn" onclick="reuse(${i})">Chạy lại</button>
+        </div>
+    `).join('');
+}
+
+function reuse(i) {
+    let h = [];
+    try { h = JSON.parse(localStorage.getItem(LS) || '[]'); } catch {}
+    if (h[i]) {
+        $u.value = h[i].from;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(run, 250);
+    }
+}
+
+function clearH() {
+    if (!confirm('Xoá toàn bộ lịch sử?')) return;
+    localStorage.removeItem(LS);
+    renderH();
+}
+
+function exportH() {
+    let h = [];
+    try { h = JSON.parse(localStorage.getItem(LS) || '[]'); } catch {}
+    if (!h.length) return toast('Chưa có lịch sử');
+    const blob = new Blob([JSON.stringify(h, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'vip-bypass-history.json';
+    a.click();
+    toast('📥 Đã export!');
+}
+
+/* ============================================================
+   KEYBOARD SHORTCUTS
+   ============================================================ */
+$u.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { resetAll(); }
+});
+
+// Auto-paste & chạy khi paste link
+$u.addEventListener('paste', () => {
+    setTimeout(() => {
+        const v = $u.value.trim();
+        if (/^https?:\/\/.+/.test(v)) run();
+    }, 120);
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderH();
+updateStatsUI();
+$u.focus();
+</script>
+</body>
+</html>
